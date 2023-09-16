@@ -1,0 +1,32 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > * {
+  margin-top: 10px;
+}
+
+form input {
+  width: 35%;
+}
+.bookAdd {
+  width: 15%;
+  color: blue;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+.bookRemove {
+  color: green;
+  width: 100px;
+  margin-left: 25px;
+}
+
+.bookRead {
+  color: red;
+  width: 100px;
+  margin-left: 25px;
+}
