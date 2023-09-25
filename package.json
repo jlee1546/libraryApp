@@ -1,0 +1,22 @@
+{
+  "name": "libraryapp",
+  "version": "1.0.0",
+  "description": "This lis a Library App for The Odin Project's JavaScript lesson. It requires the use of JavaScript objects to practice what I have learned in the lesson.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlee1546/libraryApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jlee1546/libraryApp/issues"
+  },
+  "homepage": "https://github.com/jlee1546/libraryApp#readme",
+  "devDependencies": {
+    "eslint": "^8.50.0"
+  }
+}
