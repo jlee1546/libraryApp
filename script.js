@@ -1,8 +1,8 @@
-let arrayOfBooks = [];
+let arrayOfBooks = [new Book("It", "King", true)];
 
 const openModalBtn = document.getElementById("openModal");
 const deleteBookText = document.getElementById("bookToDeleteText");
-const deleteBookBtn = document.getElementById("deleteButton");
+
 const dialog = document.getElementById("addBookModal");
 const title = document.getElementById("title");
 const author = document.getElementById("author");
@@ -10,8 +10,8 @@ const read = document.getElementById("read");
 const addBookBtn = document.getElementById("addButton");
 
 // Default book used as example
-const defaultBook = new Book("It", "King", true);
-arrayOfBooks.push(defaultBook);
+// const defaultBook = new Book("It", "King", true);
+// arrayOfBooks.push(defaultBook);
 
 // Book constructor for creating new instance of Book
 function Book(title, author, read) {
@@ -33,15 +33,25 @@ function addBookToShelf(bookTemplate) {
 
 // Template used to format a book entry
 function createBookDisplayTemplate(bookInfo) {
-  const bookTemplate = `<div class="book">${bookInfo.title} ${bookInfo.author} ${bookInfo.read}</div>`;
+  const bookTemplate = `
+    <div class="book">
+      <p>Title: ${bookInfo.title}</p>  
+      <p>Author: ${bookInfo.author}</p>
+      <div>
+        <button id="markRead">Read</button>
+        <button id="deleteBook">Delete</button>
+      </div>
+    </div>`;
   return bookTemplate;
 }
 
-// Conttrols the book process
+// Controls the book process
 function processBooks() {
   arrayOfBooks.forEach((book) => {
     const template = createBookDisplayTemplate(book);
     addBookToShelf(template);
+    addDeleteBookEventListener();
+    addBookReadEventListener();
   });
 }
 
@@ -50,6 +60,65 @@ function resetModalValues() {
   title.value = "";
   author.value = "";
   read.value = "default";
+}
+
+function addDeleteBookEventListener() {
+  const deleteBookBtn = document.getElementById("deleteBook");
+  deleteBookBtn.addEventListener("click", (event) => {
+    deleteBookEventHandler(event);
+  });
+}
+
+function deleteBookEventHandler(event) {
+  const titleOfBook = returnTitle(event);
+  const indexOfBookInArray = findIndexOfBook(titleOfBook);
+  deleteBookFromArray(indexOfBookInArray);
+  resetBookShelf();
+  processBooks();
+}
+
+function addBookReadEventListener() {
+  const markReadBtn = document.getElementById("markRead");
+  markReadBtn.addEventListener("click", (event) => {
+    const title = returnTitle(event);
+    const arrayLength = arrayOfBooks.length;
+    for (let i = 0; i < arrayLength; i++) {
+      if (arrayOfBooks[i].title === title) {
+        if (arrayOfBooks[i].read === true) {
+          arrayOfBooks[i].read = false;
+          event.target.textContent = "Unread";
+        } else {
+          arrayOfBooks[i].read = true;
+          event.target.textContent = "Read";
+        }
+      }
+    }
+  });
+}
+
+function deleteBookFromArray(index) {
+  const numberOfArrayElementsToRemove = 1;
+  arrayOfBooks.splice(index, numberOfArrayElementsToRemove);
+}
+
+function findIndexOfBook(titleOfBook) {
+  let arrayLength = arrayOfBooks.length;
+  for (let i = 0; i < arrayLength; i++) {
+    if (arrayOfBooks[i].title === titleOfBook) {
+      return i;
+    }
+  }
+}
+
+function resetBookShelf() {
+  const bookShelf = document.getElementById("bookShelf");
+  bookShelf.innerHTML = "";
+}
+
+function returnTitle(event) {
+  const deleteButtonParent = event.target.parentNode.parentNode;
+  const title = deleteButtonParent.children[0].textContent.slice(7);
+  return title;
 }
 
 // event listeners
