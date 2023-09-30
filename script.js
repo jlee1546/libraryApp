@@ -1,17 +1,14 @@
+// Array that contains all books currently on the library shelf
+// arrayOfBooks is initialized with a default/example boo
 let arrayOfBooks = [new Book("It", "King", true)];
 
+// constants for the dialog modal
 const openModalBtn = document.getElementById("openModal");
-const deleteBookText = document.getElementById("bookToDeleteText");
-
 const dialog = document.getElementById("addBookModal");
 const title = document.getElementById("title");
 const author = document.getElementById("author");
 const read = document.getElementById("read");
 const addBookBtn = document.getElementById("addButton");
-
-// Default book used as example
-// const defaultBook = new Book("It", "King", true);
-// arrayOfBooks.push(defaultBook);
 
 // Book constructor for creating new instance of Book
 function Book(title, author, read) {
@@ -35,9 +32,9 @@ function addBookToShelf(bookTemplate) {
 function createBookDisplayTemplate(bookInfo) {
   const bookTemplate = `
     <div class="book">
-      <p>Title: ${bookInfo.title}</p>  
-      <p>Author: ${bookInfo.author}</p>
-      <div>
+      <p><span class="book-entry-text">Title:</span><span class="book-info-text"> ${bookInfo.title}</span></p>  
+      <p><span class="book-entry-text">Author:</span><span class="book-info-text"> ${bookInfo.author}</span></p>
+      <div class="bookButtons">
         <button id="markRead">Read</button>
         <button id="deleteBook">Delete</button>
       </div>
@@ -45,7 +42,7 @@ function createBookDisplayTemplate(bookInfo) {
   return bookTemplate;
 }
 
-// Controls the book process
+// adding a book to the book shelf container
 function processBooks() {
   arrayOfBooks.forEach((book) => {
     const template = createBookDisplayTemplate(book);
@@ -62,6 +59,7 @@ function resetModalValues() {
   read.value = "default";
 }
 
+// function that adds an event listener to a future button
 function addDeleteBookEventListener() {
   const deleteBookBtn = document.getElementById("deleteBook");
   deleteBookBtn.addEventListener("click", (event) => {
@@ -69,6 +67,7 @@ function addDeleteBookEventListener() {
   });
 }
 
+// contains logic for event handler callback function
 function deleteBookEventHandler(event) {
   const titleOfBook = returnTitle(event);
   const indexOfBookInArray = findIndexOfBook(titleOfBook);
@@ -77,51 +76,70 @@ function deleteBookEventHandler(event) {
   processBooks();
 }
 
+//function that adds an event listener to a future button
 function addBookReadEventListener() {
   const markReadBtn = document.getElementById("markRead");
   markReadBtn.addEventListener("click", (event) => {
-    const title = returnTitle(event);
-    const arrayLength = arrayOfBooks.length;
-    for (let i = 0; i < arrayLength; i++) {
-      if (arrayOfBooks[i].title === title) {
-        if (arrayOfBooks[i].read === true) {
-          arrayOfBooks[i].read = false;
-          event.target.textContent = "Unread";
-        } else {
-          arrayOfBooks[i].read = true;
-          event.target.textContent = "Read";
-        }
-      }
-    }
+    bookReadEventHandler(event);
   });
 }
 
+//contains logic for event listener callback function
+function bookReadEventHandler(event) {
+  const title = returnTitle(event);
+  const arrayLength = arrayOfBooks.length;
+  for (let i = 0; i < arrayLength; i++) {
+    const book = arrayOfBooks[i];
+    if (book.title === title) {
+      if (book.read === true) {
+        book.read = false;
+        event.target.textContent = "Unread";
+      } else {
+        book.read = true;
+        event.target.textContent = "Read";
+      }
+    }
+  }
+}
+
+// function that accepts an integer to be used to remove an element
+// from arrayOfBooks
 function deleteBookFromArray(index) {
   const numberOfArrayElementsToRemove = 1;
   arrayOfBooks.splice(index, numberOfArrayElementsToRemove);
 }
 
+// function that accepts a string and returns the index
+// as an integer
 function findIndexOfBook(titleOfBook) {
   let arrayLength = arrayOfBooks.length;
   for (let i = 0; i < arrayLength; i++) {
-    if (arrayOfBooks[i].title === titleOfBook) {
+    const book = arrayOfBooks[i];
+    if (book.title === titleOfBook) {
       return i;
     }
   }
 }
 
+// function that resets the bookshelf or resets the bookshelf
+//  and displays a message
 function resetBookShelf() {
   const bookShelf = document.getElementById("bookShelf");
-  bookShelf.innerHTML = "";
+
+  arrayOfBooks.length === 0
+    ? (bookShelf.innerHTML = "<span>Currently Empty!</span>")
+    : (bookShelf.innerHTML = "");
 }
 
+// function accepts an event and returns a book title as
+//  a string
 function returnTitle(event) {
   const deleteButtonParent = event.target.parentNode.parentNode;
   const title = deleteButtonParent.children[0].textContent.slice(7);
   return title;
 }
 
-// event listeners
+//  modal event listeners
 
 openModalBtn.addEventListener("click", () => {
   resetModalValues();
@@ -142,4 +160,5 @@ addBookBtn.addEventListener("click", (event) => {
   dialog.close();
 });
 
+// call the function on pageload to begin the library process
 processBooks();
