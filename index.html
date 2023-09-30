@@ -8,22 +8,16 @@
     <title>Library App</title>
   </head>
   <body>
-    <h1>Biblioteca Mia</h1>
-    <button id="openModal">+ Book</button>
-    <label for="bookToDeleteText">Delete Book</label>
-    <input type="text" id="bookToDeleteText" placeholder="Enter Title" />
-    <button id="deleteButton">- Book</button>
-
-    <!--Modal for adding new book to library -->
+    <!-- modal for entering new book -->
     <dialog id="addBookModal">
       <form action="" id="addBookForm">
         <label for="title"
           >Title
-          <input type="text" id="title" />
+          <input type="text" id="title" maxlength="15" />
         </label>
         <label for="author"
           >Author
-          <input type="text" id="author" />
+          <input type="text" id="author" maxlength="15" />
         </label>
         <label for="read"
           >Read?
@@ -33,16 +27,21 @@
             <option>No</option>
           </select>
         </label>
-        <div>
+        <div class="modalButtons">
           <button value="cancel" formmethod="dialog">Cancel</button>
           <button id="addButton" value="default">Add</button>
         </div>
       </form>
     </dialog>
-    <!-- End Modal -->
+    <!-- end modal -->
+
+    <h1 class="main-title">Minimalist Library</h1>
+
+    <span>Want to add a book? Press this button: </span>
+    <button id="openModal">+ Book</button>
 
     <!--Container for showing books in library -->
-    <h2>Books on shelf</h2>
+    <h2 class="bookShelf-title">Books on shelf</h2>
     <div id="bookShelf"></div>
   </body>
 </html>
